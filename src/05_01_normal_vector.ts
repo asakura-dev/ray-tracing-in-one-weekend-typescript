@@ -1,4 +1,4 @@
-import FileWriter from "./utils/file_writer";
+import FileWriter from "./utils/FireWriter";
 import Ray from "./Ray";
 import Vec3 from "./vec3";
 

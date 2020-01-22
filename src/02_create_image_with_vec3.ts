@@ -1,4 +1,4 @@
-import FileWriter from './utils/file_writer';
+import FileWriter from './utils/FireWriter';
 import Vec3 from './Vec3';
 
 const writer = new FileWriter('./dist/02_create_image_with_vec3.ppm');

@@ -1,4 +1,4 @@
-import FileWriter from './utils/file_writer';
+import FileWriter from './utils/FireWriter';
 
 const writer = new FileWriter('./dist/01_create_image.ppm');
 
