@@ -1,6 +1,7 @@
 import FileWriter from "./utils/FireWriter";
 import Ray from "./Ray";
 import Vec3 from "./vec3";
+import { byteColorText } from './utils/Utils';
 
 const writer = new FileWriter("./dist/05_01_normal_vector.ppm");
 
@@ -55,10 +56,7 @@ function main() {
           .plus(vertical.multiply(v))
       );
       const col = color(r);
-      const ir = Math.floor(255.99 * col.get(0));
-      const ig = Math.floor(255.99 * col.get(1));
-      const ib = Math.floor(255.99 * col.get(2));
-      writer.append(`${ir} ${ig} ${ib}\n`);
+      writer.append(`${byteColorText(col)}\n`);
     }
   }
 }
