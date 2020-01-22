@@ -6,3 +6,11 @@ export function byteColorText(col: Vec3) {
   const ib = Math.floor(255.99 * col.get(2));
   return `${ir} ${ig} ${ib}`;
 }
+
+export function gammaCorrection(original: Vec3) {
+  return new Vec3(
+    Math.sqrt(original.get(0)),
+    Math.sqrt(original.get(1)),
+    Math.sqrt(original.get(2))
+  );
+}
