@@ -1,13 +1,16 @@
 import { HitRecord, Hittable, HitResult } from "./Hittable";
 import Vec3 from "./vec3";
 import Ray from "./Ray";
+import { Material } from './Material';
 
 export default class Sphere implements Hittable {
   public center: Vec3;
   public radius: number;
-  constructor(cen: Vec3, r: number) {
+  public material: Material;
+  constructor(cen: Vec3, r: number, material?: Material) {
     this.center = cen.clone();
     this.radius = r;
+    this.material = material;
   }
 
   hit(r: Ray, tMin: number, tMax: number): HitResult {
@@ -22,7 +25,8 @@ export default class Sphere implements Hittable {
         const t = temp;
         const p = r.point_at_parameter(t);
         const normal = p.minus(this.center).divide(this.radius);
-        const hitRecord: HitRecord = { t, p, normal };
+        const material = this.material;
+        const hitRecord: HitRecord = { t, p, normal, material};
         return { hitRecord, isHit: true };
       }
       temp = (-b + Math.sqrt(discriminant)) / a;
@@ -30,7 +34,8 @@ export default class Sphere implements Hittable {
         const t = temp;
         const p = r.point_at_parameter(t);
         const normal = p.minus(this.center).divide(this.radius);
-        const hitRecord: HitRecord = { t, p, normal };
+        const material = this.material;
+        const hitRecord: HitRecord = { t, p, normal, material};
         return { hitRecord, isHit: true };
       }
     }
