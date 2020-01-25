@@ -17,16 +17,24 @@ export default class HittableList implements Hittable {
     let isHitAnything = false;
     let closestSoFar = tMax;
     this.list.forEach(hittable => {
-      const { isHit, hitRecord } = hittable.hit(r, tMin, closestSoFar);
-      if (isHit) {
+      const hitResult = hittable.hit(r, tMin, closestSoFar);
+      if (hitResult.isHit) {
+        const hitRecord = hitResult.hitRecord;
         isHitAnything = true;
         closestSoFar = hitRecord.t;
         closestHitRecord = hitRecord;
       }
     });
-    return {
-      isHit: isHitAnything,
-      hitRecord: closestHitRecord
-    };
+    if (isHitAnything) {
+      return {
+        isHit: true,
+        hitRecord: closestHitRecord!
+      };
+    } else {
+      return {
+        isHit: false,
+        hitRecord: null
+      };
+    }
   }
 }

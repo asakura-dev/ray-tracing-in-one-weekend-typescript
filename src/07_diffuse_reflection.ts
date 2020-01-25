@@ -1,16 +1,21 @@
 import FileWriter from "./utils/FireWriter";
-import { byteColorText, gammaCorrection, randomInUnitSphere } from "./utils/Utils";
+import {
+  byteColorText,
+  gammaCorrection,
+  randomInUnitSphere
+} from "./utils/Utils";
 import Vec3 from "./vec3";
 import Ray from "./Ray";
 import { Hittable } from "./Hittable";
 import HittableList from "./HittableList";
 import Sphere from "./Sphere";
 import Camera from "./Camera";
+import DefaultMaterial from "./material/DefaultMaterial";
 
-
-function color(r: Ray, world: Hittable) {
-  const { hitRecord, isHit } = world.hit(r, 0.001, 1000000);
-  if (isHit) {
+function color(r: Ray, world: Hittable): Vec3 {
+  const hitResult = world.hit(r, 0.001, 1000000);
+  if (hitResult.isHit) {
+    const hitRecord = hitResult.hitRecord;
     const target = hitRecord.p
       .plus(hitRecord.normal)
       .plus(randomInUnitSphere());
@@ -36,8 +41,8 @@ function main() {
   writer.append(`${nx} ${ny}\n`);
   writer.append(`255\n`);
   const world = new HittableList([
-    new Sphere(new Vec3(0, 0, -1), 0.5),
-    new Sphere(new Vec3(0, -100.5, -1), 100)
+    new Sphere(new Vec3(0, 0, -1), 0.5, new DefaultMaterial()),
+    new Sphere(new Vec3(0, -100.5, -1), 100, new DefaultMaterial())
   ]);
   const camera = new Camera();
   for (let j = ny - 1; j >= 0; j--) {

@@ -8,11 +8,12 @@ import Sphere from "./Sphere";
 import Camera from "./Camera";
 import Lambertian from "./material/Lambertian";
 import Metal from "./material/Metal";
-import Dielectric from './material/Dielectric';
+import Dielectric from "./material/Dielectric";
 
-function color(r: Ray, world: Hittable, depth: number) {
-  const { hitRecord, isHit } = world.hit(r, 0.001, 1000000000);
-  if (isHit) {
+function color(r: Ray, world: Hittable, depth: number): Vec3 {
+  const hitResult = world.hit(r, 0.001, 1000000000);
+  if (hitResult.isHit) {
+    const hitRecord = hitResult.hitRecord;
     const { attenuation, scattered, isScat } = hitRecord.material.scatter(
       r,
       hitRecord
@@ -55,11 +56,7 @@ function main() {
       0.5,
       new Metal(new Vec3(0.8, 0.6, 0.2), 0.5)
     ),
-    new Sphere(
-      new Vec3(-1, 0, -1),
-      0.5,
-      new Dielectric(1.5)
-    )
+    new Sphere(new Vec3(-1, 0, -1), 0.5, new Dielectric(1.5))
   ]);
   const camera = new Camera();
   for (let j = ny - 1; j >= 0; j--) {

@@ -8,11 +8,12 @@ import Sphere from "./Sphere";
 import Camera3 from "./Camera3";
 import Lambertian from "./material/Lambertian";
 import Metal from "./material/Metal";
-import Dielectric from './material/Dielectric';
+import Dielectric from "./material/Dielectric";
 
-function color(r: Ray, world: Hittable, depth: number) {
-  const { hitRecord, isHit } = world.hit(r, 0.001, 100000000000000);
-  if (isHit) {
+function color(r: Ray, world: Hittable, depth: number): Vec3 {
+  const hitResult = world.hit(r, 0.001, 100000000000000);
+  if (hitResult.isHit) {
+    const hitRecord = hitResult.hitRecord;
     const { attenuation, scattered, isScat } = hitRecord.material.scatter(
       r,
       hitRecord
@@ -33,31 +34,53 @@ function color(r: Ray, world: Hittable, depth: number) {
 
 function randomScene() {
   const list: Hittable[] = [];
-  list.push(new Sphere(new Vec3(0, -1000, 0), 1000, new Lambertian(
-    new Vec3(0.5, 0.5, 0.5)
-  )))
-  for(let a = -11; a < 11; a++) {
-    for(let b = -11; b < 11; b++) {
+  list.push(
+    new Sphere(
+      new Vec3(0, -1000, 0),
+      1000,
+      new Lambertian(new Vec3(0.5, 0.5, 0.5))
+    )
+  );
+  for (let a = -11; a < 11; a++) {
+    for (let b = -11; b < 11; b++) {
       const chooseMat = Math.random();
-      const center = new Vec3(a + 0.9*Math.random(), 0.2, b + 0.9 * Math.random());
+      const center = new Vec3(
+        a + 0.9 * Math.random(),
+        0.2,
+        b + 0.9 * Math.random()
+      );
       if (center.minus(new Vec3(4, 0.2, 0)).length() > 0.9) {
-        if(chooseMat < 0.8) { 
+        if (chooseMat < 0.8) {
           // diffuse
-          list.push(new Sphere(center, 0.2, new Lambertian(new Vec3(
-            Math.random() * Math.random(),
-            Math.random() * Math.random(),
-            Math.random() * Math.random()
-          ))));
-        } else if(chooseMat < 0.95) {
+          list.push(
+            new Sphere(
+              center,
+              0.2,
+              new Lambertian(
+                new Vec3(
+                  Math.random() * Math.random(),
+                  Math.random() * Math.random(),
+                  Math.random() * Math.random()
+                )
+              )
+            )
+          );
+        } else if (chooseMat < 0.95) {
           // metal
-          list.push(new Sphere(center, 0.2, new Metal(
-            new Vec3(
-              0.5 * (1 + Math.random()),
-              0.5 * (1 + Math.random()),
-              0.5 * (1 + Math.random()),
-            ),
-            0.5 * Math.random()
-          )));
+          list.push(
+            new Sphere(
+              center,
+              0.2,
+              new Metal(
+                new Vec3(
+                  0.5 * (1 + Math.random()),
+                  0.5 * (1 + Math.random()),
+                  0.5 * (1 + Math.random())
+                ),
+                0.5 * Math.random()
+              )
+            )
+          );
         } else {
           // glass
           list.push(new Sphere(center, 0.2, new Dielectric(1.5)));
@@ -65,9 +88,13 @@ function randomScene() {
       }
     }
   }
-  list.push(new Sphere(new Vec3(0,1,0), 1.0, new Dielectric(1.5)));
-  list.push(new Sphere(new Vec3(-4, 1, 0), 1.0, new Lambertian(new Vec3(0.4, 0.2, 0.1))));
-  list.push(new Sphere(new Vec3(4,1,0), 1.0, new Metal(new Vec3(0.7,0.6,0.5), 0.0)));
+  list.push(new Sphere(new Vec3(0, 1, 0), 1.0, new Dielectric(1.5)));
+  list.push(
+    new Sphere(new Vec3(-4, 1, 0), 1.0, new Lambertian(new Vec3(0.4, 0.2, 0.1)))
+  );
+  list.push(
+    new Sphere(new Vec3(4, 1, 0), 1.0, new Metal(new Vec3(0.7, 0.6, 0.5), 0.0))
+  );
 
   return new HittableList(list);
 }

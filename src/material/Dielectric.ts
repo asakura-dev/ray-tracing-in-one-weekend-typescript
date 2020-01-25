@@ -11,7 +11,7 @@ function schlick(cosine: number, refIdx: number) {
 }
 
 type RefractResult = {
-  refracted?: Vec3;
+  refracted: Vec3;
   isRefract: boolean;
 };
 
@@ -30,6 +30,7 @@ function refract(v: Vec3, n: Vec3, ni_over_nt: number): RefractResult {
     };
   } else {
     return {
+      refracted: new Vec3(0, 0, 0),
       isRefract: false
     };
   }
@@ -83,7 +84,7 @@ export default class Dielectric implements Material {
     } else {
       scattered = new Ray(hitRecord.p, refracted);
     }
-    
+
     return {
       attenuation,
       scattered,

@@ -8,9 +8,10 @@ import Sphere from "./Sphere";
 import Camera2 from "./Camera2";
 import Lambertian from "./material/Lambertian";
 
-function color(r: Ray, world: Hittable, depth: number) {
-  const { hitRecord, isHit } = world.hit(r, 0.001, 1000000000);
-  if (isHit) {
+function color(r: Ray, world: Hittable, depth: number): Vec3 {
+  const hitResult = world.hit(r, 0.001, 1000000000);
+  if (hitResult.isHit) {
+    const hitRecord = hitResult.hitRecord;
     const { attenuation, scattered, isScat } = hitRecord.material.scatter(
       r,
       hitRecord

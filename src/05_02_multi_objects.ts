@@ -5,12 +5,14 @@ import Vec3 from "./vec3";
 import Sphere from "./Sphere";
 import HittableList from "./HittableList";
 import { Hittable } from "./Hittable";
+import DefaultMaterial from "./material/DefaultMaterial";
 
 const writer = new FileWriter("./dist/05_02_multi_objects.ppm");
 
 function color(r: Ray, world: Hittable) {
-  const { hitRecord, isHit } = world.hit(r, 0.0, 1000000);
-  if (isHit) {
+  const hitResult = world.hit(r, 0.0, 1000000);
+  if (hitResult.isHit) {
+    const hitRecord = hitResult.hitRecord;
     return new Vec3(
       hitRecord.normal.x + 1,
       hitRecord.normal.y + 1,
@@ -36,8 +38,8 @@ function main() {
   const vertical = new Vec3(0.0, 2.0, 0.0);
   const origin = new Vec3(0.0, 0.0, 0.0);
   const list: Hittable[] = [
-    new Sphere(new Vec3(0, 0, -1), 0.5),
-    new Sphere(new Vec3(0, -100.5, -1), 100),
+    new Sphere(new Vec3(0, 0, -1), 0.5, new DefaultMaterial()),
+    new Sphere(new Vec3(0, -100.5, -1), 100, new DefaultMaterial())
   ];
   const world = new HittableList(list);
   for (let j = ny - 1; j >= 0; j--) {
