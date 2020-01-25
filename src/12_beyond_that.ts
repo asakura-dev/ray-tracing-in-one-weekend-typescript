@@ -73,9 +73,12 @@ function randomScene() {
 }
 
 function main() {
-  const writer = new FileWriter(`./dist/12_beyond_that.ppm`);
-  const nx = 200;
-  const ny = 100;
+  //const writer = new FileWriter(`./dist/12_beyond_that.ppm`);
+  //const nx = 200;
+  //const ny = 100;
+  const writer = new FileWriter(`./dist/12_beyond_that_1200_800.ppm`);
+  const nx = 1200;
+  const ny = 800;
   const ns = 100;
   writer.append(`P3\n`);
   writer.append(`${nx} ${ny}\n`);
